@@ -40,15 +40,16 @@ class TrackedArray:
         return self.arr.__len__()
 
 def update(frame):
+    steps_counter.set_text(f'Steps = {frame}')
     for (rectangle, height) in zip(container.patches, arr.full_copies[frame]):
         rectangle.set_height(height)
         rectangle.set_color('#1f77b4')
-    return (*container,)
+    return (*container, steps_counter)
 
 plt.rcParams['figure.figsize'] = (12,8)
 plt.rcParams['font.size'] = 16
 FPS = 60.0
-N = 100
+N = 50
 arr = np.round(np.linspace(0,1000,N),0)
 np.random.seed(0)
 np.random.shuffle(arr)
@@ -159,7 +160,7 @@ def shell_sort(array, n):
 ####################
 ######Sorting#######
 ####################
-########################## Name of Sorting Algoritm ##########################
+########################## Names of Sorting Algoritms #########################
 # sorter = 'Bubble Sort'
 # sorter = 'Quick Sort'
 # sorter = 'Merge Sort'
@@ -168,26 +169,22 @@ def shell_sort(array, n):
 
 sorting_algoritms = {1:'Bubble Sort', 2:'Quick Sort', 3:'Merge Sort', 4:'Instertion Sort',5:'Shell Sort'}
 print('\tSelect sorting Algoritm')
-sa = int(input(f'1 : {sorting_algoritms[1]}\n2 : {sorting_algoritms[2]}\n3 : {sorting_algoritms[3]}\n4 : {sorting_algoritms[4]}\n5 : {sorting_algoritms[5]}\n:'))
-if sa == 1:
-    sorter = 'Bubble Sort'
-    t0=time.perf_counter()
+sa = input(f'1 : {sorting_algoritms[1]}\n2 : {sorting_algoritms[2]}\n3 : {sorting_algoritms[3]}\n4 : {sorting_algoritms[4]}\n5 : {sorting_algoritms[5]}\n:')
+t0=time.perf_counter()
+if sa == '1':
+    sorter = sorting_algoritms[1]   
     bubble_sort(arr)
-elif sa == 2:
-    sorter = 'Quick Sort'
-    t0=time.perf_counter()
+elif sa == '2':
+    sorter = sorting_algoritms[2]
     quick_sort(arr, 0, len(arr)-1)
-elif sa == 3:
-    sorter = 'Merge Sort'
-    t0=time.perf_counter()
+elif sa == '3':
+    sorter = sorting_algoritms[3]
     merge_sort(arr, 0, len(arr)-1)
-elif sa == 4: 
-    sorter = 'Instertion Sort'
-    t0=time.perf_counter()
+elif sa == '4': 
+    sorter = sorting_algoritms[4]
     instertion_sort(arr)
-elif sa == 5: 
-    sorter = 'Shell Sort'
-    t0=time.perf_counter()
+elif sa == '5': 
+    sorter = sorting_algoritms[5]
     shell_sort(arr, len(arr))
 else:
     print('Bad input! Pick number from 1 to 5')
@@ -206,5 +203,6 @@ fig, ax = plt.subplots()
 container = ax.bar(np.arange(0, len(arr), 1), arr, align='edge', width=0.8)
 ax.set_xlim(0,N)
 ax.set(xlabel='Index', ylabel='Value', title=f'{sorter}')
+steps_counter = ax.text(0,1000, "")
 ani = FuncAnimation(fig, update, frames=range(len(arr.full_copies)), blit=True, interval=1000./FPS, repeat=False)
 plt.show()
